@@ -2,9 +2,12 @@ package com.happy.study.collectionDemo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @description: 集合类线程不安全问题
@@ -16,17 +19,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ContainerNotSafeDemo {
 
     public static void main(String[] args) {
-//       List<String> list = new ArrayList<>();
+//        listNotSafe();
+        setNotSafe();
+    }
+
+    /**
+     * 不安全的list
+     */
+    public static void listNotSafe() {
+        List<String> list = new ArrayList<>();
 //        List<String> list = new Vector<>();
 //        List<String> list = Collections.synchronizedList(new ArrayList<>());
-        List<String> list = new CopyOnWriteArrayList<>();
-        for (int i=1; i<=3 ;i++){
-           new Thread(() ->{
-               list.add(UUID.randomUUID().toString().substring(0,8));
-               System.out.println(list);
-           },String.valueOf(i)).start();
-       }
-       // 当线程变多的时候 会出现 java.util.ConcurrentModificationException
+//        List<String> list = new CopyOnWriteArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            new Thread(() -> {
+                list.add(UUID.randomUUID().toString().substring(0, 8));
+                System.out.println(list);
+            }, String.valueOf(i)).start();
+        }
+        // 当线程变多的时候 会出现 java.util.ConcurrentModificationException
         /**
          * 故障现象：
          *   会出现 java.util.ConcurrentModificationException
@@ -47,5 +58,22 @@ public class ContainerNotSafeDemo {
          * 5:最后新数组赋值给volatile修饰的array数组
          *
          */
+    }
+
+    /**
+     * 不安全的set
+     */
+    public static void setNotSafe() {
+//        Set<String> set = new HashSet<>();
+//         new HashSet<>().add("a");
+        //HashSet的add方法只需要一个元素，并作为key，value是一个object常量
+//        Set<String> set = Collections.synchronizedSet(new HashSet<>());
+        Set<String> set = new CopyOnWriteArraySet<>();
+        for (int i = 1; i <= 3; i++) {
+            new Thread(() -> {
+                set.add(UUID.randomUUID().toString().substring(0, 8));
+                System.out.println(set);
+            }, String.valueOf(i)).start();
+        }
     }
 }

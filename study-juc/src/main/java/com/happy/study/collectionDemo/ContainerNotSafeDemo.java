@@ -2,10 +2,13 @@ package com.happy.study.collectionDemo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -20,18 +23,20 @@ public class ContainerNotSafeDemo {
 
     public static void main(String[] args) {
 //        listNotSafe();
-        setNotSafe();
+//        setNotSafe();
+        mapNotSafe();
     }
 
+
     /**
-     * 不安全的list
+     * list
      */
     public static void listNotSafe() {
         List<String> list = new ArrayList<>();
 //        List<String> list = new Vector<>();
 //        List<String> list = Collections.synchronizedList(new ArrayList<>());
 //        List<String> list = new CopyOnWriteArrayList<>();
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 30; i++) {
             new Thread(() -> {
                 list.add(UUID.randomUUID().toString().substring(0, 8));
                 System.out.println(list);
@@ -61,19 +66,35 @@ public class ContainerNotSafeDemo {
     }
 
     /**
-     * 不安全的set
+     * set
      */
     public static void setNotSafe() {
-//        Set<String> set = new HashSet<>();
+        Set<String> set = new HashSet<>();
 //         new HashSet<>().add("a");
         //HashSet的add方法只需要一个元素，并作为key，value是一个object常量
 //        Set<String> set = Collections.synchronizedSet(new HashSet<>());
-        Set<String> set = new CopyOnWriteArraySet<>();
-        for (int i = 1; i <= 3; i++) {
+//        Set<String> set = new CopyOnWriteArraySet<>();
+        for (int i = 1; i <= 30; i++) {
             new Thread(() -> {
                 set.add(UUID.randomUUID().toString().substring(0, 8));
                 System.out.println(set);
             }, String.valueOf(i)).start();
         }
     }
+
+    /**
+     * map
+     */
+    private static void mapNotSafe() {
+        Map<String,String> map =new HashMap<>();
+//        Map<String,String> map = Collections.synchronizedMap(new HashMap<>());
+//        Map<String,String> map = new ConcurrentHashMap<>();
+        for (int i = 1; i <= 30; i++) {
+            new Thread(() -> {
+                map.put(Thread.currentThread().getName(),UUID.randomUUID().toString().substring(0, 8));
+                System.out.println(map);
+            }, String.valueOf(i)).start();
+        }
+    }
+
 }

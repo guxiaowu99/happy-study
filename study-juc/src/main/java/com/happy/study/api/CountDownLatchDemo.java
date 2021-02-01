@@ -3,7 +3,7 @@ package com.happy.study.api;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @description:
+ * @description: 到计数工具
  * @author: zhangmengchao
  * @date: Created in 2021/1/18 下午8:51
  * @version: 1.0

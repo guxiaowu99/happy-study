@@ -13,6 +13,7 @@ public class HelloGC {
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println("************HelloGC");
-        Thread.sleep(MAX_VALUE);
+//        byte[] bytes = new byte[50 * 1024 *1024];
+//        Thread.sleep(MAX_VALUE);
     }
 }

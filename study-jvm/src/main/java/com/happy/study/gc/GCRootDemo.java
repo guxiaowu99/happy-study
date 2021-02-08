@@ -1,4 +1,4 @@
-package com.happy.study;
+package com.happy.study.gc;
 
 /**
  * @description: GcRoot案例
